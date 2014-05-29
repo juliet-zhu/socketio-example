@@ -5,7 +5,6 @@ var express = require('express'),
 	path = require('path'),
 	app = express();
 
-app.configure(function(){
 	app.set('port',process.env.PORT||3000);
 	app.set('views',__dirname+'/views');
 	app.set('view engine','ejs');
@@ -15,7 +14,6 @@ app.configure(function(){
 	app.use(express.methodOverride());
 	app.use(app.router);
 	app.use(express.static(path.join(__dirname,"public")));
-});
 
 app.configure('development',function(){
 	app.use(express.errorHandler());
@@ -23,6 +21,7 @@ app.configure('development',function(){
 
 app.get('/',routers.index);
 
-http.createServer(app).listen(app.get('port'),function(){
+var server = http.createServer(app).listen(app.get('port'),function(){
 	console.log("Express server listening on port " + app.get('port'));
 });
+require('./routers/sockets').initialize(server);
