@@ -1,21 +1,23 @@
-var app = require('express')(),
+var express = require('express'),
 	routers = require('./routers'),
-	http = require('http'),
-	path = require('path');
 
-app.config(function(){
+	http = require('http'),
+	path = require('path'),
+	app = express();
+
+app.configure(function(){
 	app.set('port',process.env.PORT||3000);
-	app.set('views',_dirname+'/views');
+	app.set('views',__dirname+'/views');
 	app.set('view engine','ejs');
-	app.use(express.faviicon());
+	app.use(express.favicon());
 	app.use(express.logger('dev'));
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
 	app.use(app.router);
-	app.use(express.static(path.join(_dirname,"public")));
+	app.use(express.static(path.join(__dirname,"public")));
 });
 
-app.config('development',function(){
+app.configure('development',function(){
 	app.use(express.errorHandler());
 });
 
